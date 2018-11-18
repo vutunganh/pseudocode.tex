@@ -1,0 +1,77 @@
+\input opmac
+
+\ifx\pseudocodeversion\undefined \else \endinput \fi
+\def\pseudocodeversion{v0.1}
+
+\newdimen\algoskip
+\algoskip=\parskip
+\newdimen\oldparskip
+
+\newcount\algoline
+\algoline=1
+
+\newdimen\stindent
+\stindent=2em
+
+\newcount\algoindentlvl
+\algoindentlvl=1
+\newcount\tmpalgoindentlvl
+
+\def\algoincindent{\advance\algoindentlvl by 1}
+\def\algodecindent{\advance\algoindentlvl by -1}
+\def\algoincln{\advance\algoline by 1}
+
+\def\algost#1{
+  \ifnum\algoline>0
+    \the\algoline
+    \algoincln
+  \fi
+  \tmpalgoindentlvl=\algoindentlvl
+  \loop
+    \ifnum\tmpalgoindentlvl>0
+      \hskip\stindent
+      \advance\tmpalgoindentlvl by -1
+  \repeat
+  #1\par
+}
+
+\def\algoif#1{
+  \algost{if #1}
+  \algoincindent
+}
+
+\def\algoelse{
+  \algodecindent
+  \algost{else}\par
+  \algoincindent
+}
+
+\def\algoendif{
+  \algodecindent
+}
+
+\def\algofor#1{
+  \algost{for #1}
+  \algoincindent
+}
+
+\def\algoendfor{
+  \algodecindent
+}
+
+\def\algoinput#1{Vstup: #1\par}
+\def\algooutput#1{Výstup: #1\par}
+
+\def\begalgo#1{
+  \midinsert
+  \bgroup
+  \oldparskip=\parskip
+  \parskip=0pt
+  {\bf #1}\par
+}
+
+\def\endalgo{
+  \egroup
+  \endinsert
+}
+
